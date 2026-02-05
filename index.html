@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>התחברות לפלטפורמה</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="login-box">
+            <!-- מסך הזנת טלפון -->
+            <div id="phoneScreen">
+                <h1>ברוכים הבאים</h1>
+                <p class="subtitle">התחבר לפלטפורמה לניהול קהילות</p>
+                
+                <form id="phoneForm">
+                    <div class="input-group">
+                        <label for="phone">מספר טלפון סלולרי</label>
+                        <input type="tel" id="phone" placeholder="05X-XXXXXXX" required>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary">שלח קוד התחברות</button>
+                </form>
+                
+                <p class="signup-link">עדיין לא נרשמת? <a href="signup.html">הירשם כאן</a></p>
+            </div>
+            
+            <!-- מסך אימות קוד -->
+            <div id="loginVerificationScreen" class="hidden">
+                <h1>אימות קוד</h1>
+                <p class="subtitle">הזן את קוד ההתחברות</p>
+                
+                <div class="code-display">
+                    <p>🔐 <strong>הקוד שלך (בפרודקשן ישלח ב-SMS):</strong></p>
+                    <div id="loginCode" class="code-box">------</div>
+                </div>
+                
+                <form id="loginVerificationForm">
+                    <div class="input-group">
+                        <label for="loginCodeInput">הזן קוד בן 6 ספרות</label>
+                        <input type="text" id="loginCodeInput" maxlength="6" pattern="[0-9]{6}" required>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary">התחבר</button>
+                    <button type="button" id="resendLoginCode" class="btn-secondary">שלח קוד חדש</button>
+                </form>
+                
+                <p class="signup-link"><a href="#" id="backToPhone">חזור</a></p>
+            </div>
+        </div>
+        
+        <div id="message" class="message hidden"></div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>

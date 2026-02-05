@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>הקהילות שלי</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="home-body">
+    <!-- תפריט עליון -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">🏘️ פלטפורמת קהילות</div>
+            <div class="nav-user">
+                <span id="userName">טוען...</span>
+                <button id="logoutBtn" class="btn-logout">התנתק</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- תוכן ראשי -->
+    <main class="main-content">
+        <div class="page-header">
+            <h1>הקהילות שלי</h1>
+            <p>נהל את הקהילות שיצרת והצטרפת אליהן</p>
+            <button id="createNewBtn" class="btn-primary" style="margin-top: 15px;">➕ צור קהילה חדשה</button>
+        </div>
+
+        <div id="communitiesList" class="communities-list">
+            <!-- יוצג דינמית -->
+        </div>
+
+        <div id="emptyState" class="empty-state hidden">
+            <div class="empty-icon">📭</div>
+            <h2>אין לך קהילות עדיין</h2>
+            <p>צור את הקהילה הראשונה שלך או הצטרף לקהילות קיימות</p>
+            <button class="btn-primary" onclick="window.location.href='create-community.html'">צור קהילה</button>
+        </div>
+    </main>
+
+    <script src="my-communities.js"></script>
+</body>
+</html>

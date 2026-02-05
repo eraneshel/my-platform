@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>קהילה</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="home-body">
+    <!-- תפריט עליון -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">🏘️ פלטפורמת קהילות</div>
+            <div class="nav-user">
+                <span id="userName">טוען...</span>
+                <button id="logoutBtn" class="btn-logout">התנתק</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- תוכן ראשי -->
+    <main class="main-content">
+        <!-- כותרת הקהילה -->
+        <div class="community-hero">
+            <div class="community-hero-content">
+                <h1 id="communityName">טוען...</h1>
+                <p id="communityDescription"></p>
+                <div class="community-meta">
+                    <span id="communityPrivacy"></span>
+                    <span id="communityCategory"></span>
+                    <span id="communityStats"></span>
+                </div>
+                <div class="community-actions-bar">
+                    <button id="joinLeaveBtn" class="btn-primary hidden">הצטרף</button>
+                    <button id="manageBtn" class="btn-secondary hidden">⚙️ נהל קהילה</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- תוכן הקהילה -->
+        <div class="community-content">
+            <!-- עמודה שמאלית - רשימת חברים -->
+            <aside class="community-sidebar">
+                <div class="sidebar-section">
+                    <h3>חברי הקהילה</h3>
+                    <div id="membersList" class="members-list">
+                        <!-- יוצג דינמית -->
+                    </div>
+                </div>
+                
+                <div class="sidebar-section" id="rulesSection">
+                    <h3>כללי הקהילה</h3>
+                    <div id="rulesList" class="rules-list">
+                        <!-- יוצג דינמית -->
+                    </div>
+                </div>
+            </aside>
+
+            <!-- עמודה ראשית - פוסטים -->
+            <div class="community-main">
+                <!-- טופס פוסט חדש -->
+                <div id="newPostSection" class="new-post-section">
+                    <h3>שתף משהו עם הקהילה</h3>
+                    <form id="newPostForm">
+                        <textarea id="postContent" rows="3" placeholder="מה עובר לך בראש?" required></textarea>
+                        <button type="submit" class="btn-primary">פרסם</button>
+                    </form>
+                </div>
+
+                <!-- רשימת פוסטים -->
+                <div id="postsList" class="posts-list">
+                    <!-- יוצג דינמית -->
+                </div>
+
+                <div id="noPostsMsg" class="empty-state hidden">
+                    <div class="empty-icon">📝</div>
+                    <h3>אין פוסטים עדיין</h3>
+                    <p>היה הראשון לפרסם בקהילה!</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="message" class="message hidden"></div>
+
+    <script src="community.js"></script>
+</body>
+</html>
