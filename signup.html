@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>הרשמה לפלטפורמה</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="login-box">
+            <!-- מסך רישום -->
+            <div id="signupScreen">
+                <h1>הרשמה</h1>
+                <p class="subtitle">צור חשבון חדש בפלטפורמה</p>
+                
+                <form id="signupForm">
+                    <div class="input-group">
+                        <label for="firstName">שם פרטי</label>
+                        <input type="text" id="firstName" required>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="lastName">שם משפחה</label>
+                        <input type="text" id="lastName" required>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="email">אימייל</label>
+                        <input type="email" id="email" required>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="birthdate">תאריך לידה</label>
+                        <input type="text" id="birthdate" placeholder="dd/mm/yyyy" required pattern="\d{2}/\d{2}/\d{4}">
+                        <small>פורמט: dd/mm/yyyy (למשל: 15/03/1990)</small>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="phone">מספר טלפון סלולרי</label>
+                        <input type="tel" id="phone" placeholder="05X-XXXXXXX" required pattern="05[0-9]-?[0-9]{7}">
+                        <small>פורמט: 05X-XXXXXXX</small>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary">שלח קוד אימות</button>
+                </form>
+                
+                <p class="signup-link">כבר יש לך חשבון? <a href="index.html">התחבר כאן</a></p>
+            </div>
+            
+            <!-- מסך אימות קוד -->
+            <div id="verificationScreen" class="hidden">
+                <h1>אימות קוד</h1>
+                <p class="subtitle">הזן את הקוד שקיבלת</p>
+                
+                <div class="code-display">
+                    <p>🔐 <strong>הקוד שלך (בפרודקשן ישלח ב-SMS):</strong></p>
+                    <div id="generatedCode" class="code-box">------</div>
+                </div>
+                
+                <form id="verificationForm">
+                    <div class="input-group">
+                        <label for="codeInput">הזן קוד בן 6 ספרות</label>
+                        <input type="text" id="codeInput" maxlength="6" pattern="[0-9]{6}" required>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary">אמת והירשם</button>
+                    <button type="button" id="resendCode" class="btn-secondary">שלח קוד חדש</button>
+                </form>
+                
+                <p class="signup-link"><a href="#" id="backToSignup">חזור לרישום</a></p>
+            </div>
+        </div>
+        
+        <div id="message" class="message hidden"></div>
+    </div>
+    
+    <script src="signup.js"></script>
+</body>
+</html>
