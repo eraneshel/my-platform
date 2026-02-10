@@ -4,9 +4,15 @@ const currentUser = JSON.parse(localStorage.getItem('currentUser'));
 if (!currentUser) {
     window.location.href = 'index.html';
 } else {
-    document.getElementById('userName').textContent = `${currentUser.firstName} ${currentUser.lastName}`;
+    // הצגת שם המשתמש
+    document.getElementById('userFullName').textContent = `${currentUser.firstName} ${currentUser.lastName}`;
     document.getElementById('welcomeMessage').textContent = `שלום ${currentUser.firstName}! 👋`;
     
+    // הצגת אות ראשונה באווטאר
+    const initials = currentUser.firstName[0] + currentUser.lastName[0];
+    document.getElementById('userAvatar').textContent = initials;
+    
+    // הצגת פרטי משתמש
     const userDetailsDiv = document.getElementById('userDetails');
     userDetailsDiv.innerHTML = `
         <div class="detail-row">
@@ -35,26 +41,45 @@ document.getElementById('logoutBtn').addEventListener('click', function() {
     }
 });
 
-// חיבור הכפתורים בדף הבית
-const cardButtons = document.querySelectorAll('.btn-card');
-
-cardButtons[0].addEventListener('click', function() {
-    window.location.href = 'my-communities.html';
-});
-
-cardButtons[1].addEventListener('click', function() {
-    window.location.href = 'create-community.html';
-});
-
-cardButtons[2].addEventListener('click', function() {
+// כפתורים שעדיין לא מוכנים
+document.getElementById('searchCard').addEventListener('click', function() {
     alert('חיפוש קהילות יבנה בשלב הבא! 🚧');
 });
 
-cardButtons[3].addEventListener('click', function() {
-    alert('הגדרות יבנו בשלב הבא! 🚧');
+document.getElementById('eventsCard').addEventListener('click', function() {
+    alert('מערכת אירועים תבנה בהמשך! 🚧');
 });
 
-// לוגו מחזיר לדף הבית
-document.querySelector('.nav-logo').addEventListener('click', function() {
-    window.location.href = 'home.html';
+document.getElementById('notificationsCard').addEventListener('click', function() {
+    alert('מערכת התראות תבנה בהמשך! 🚧');
+});
+
+document.getElementById('settingsCard').addEventListener('click', function() {
+    alert('הגדרות יבנו בהמשך! 🚧');
+});
+
+// קישורים בסיידבר
+document.getElementById('searchCommunities').addEventListener('click', function(e) {
+    e.preventDefault();
+    alert('חיפוש קהילות יבנה בשלב הבא! 🚧');
+});
+
+document.getElementById('myProfile').addEventListener('click', function(e) {
+    e.preventDefault();
+    alert('עריכת פרופיל תבנה בהמשך! 🚧');
+});
+
+document.getElementById('notifications').addEventListener('click', function(e) {
+    e.preventDefault();
+    alert('מערכת התראות תבנה בהמשך! 🚧');
+});
+
+document.getElementById('settings').addEventListener('click', function(e) {
+    e.preventDefault();
+    alert('הגדרות יבנו בהמשך! 🚧');
+});
+
+document.getElementById('help').addEventListener('click', function(e) {
+    e.preventDefault();
+    alert('תמיכה תבנה בהמשך! 🚧');
 });

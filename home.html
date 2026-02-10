@@ -7,61 +7,130 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="home-body">
-    <!-- תפריט עליון -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-logo">🏘️ פלטפורמת קהילות</div>
-            <div class="nav-user">
-                <span id="userName">טוען...</span>
-                <button id="logoutBtn" class="btn-logout">התנתק</button>
+    <!-- סיידבר -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="user-profile">
+                <div class="user-avatar" id="userAvatar">ע</div>
+                <div class="user-info">
+                    <h3 id="userFullName">טוען...</h3>
+                    <p class="user-role">חבר קהילה</p>
+                </div>
             </div>
         </div>
-    </nav>
+
+        <nav class="sidebar-nav">
+            <!-- תפריט ראשי -->
+            <a href="home.html" class="nav-item active">
+                <span class="nav-icon">🏠</span>
+                <span class="nav-text">דף ראשי</span>
+            </a>
+            <a href="my-communities.html" class="nav-item">
+                <span class="nav-icon">👥</span>
+                <span class="nav-text">הקהילות שלי</span>
+            </a>
+            <a href="create-community.html" class="nav-item">
+                <span class="nav-icon">➕</span>
+                <span class="nav-text">צור קהילה חדשה</span>
+            </a>
+            <a href="#" class="nav-item" id="searchCommunities">
+                <span class="nav-icon">🔍</span>
+                <span class="nav-text">חפש קהילות</span>
+            </a>
+            <a href="#" class="nav-item" id="myProfile">
+                <span class="nav-icon">👤</span>
+                <span class="nav-text">הפרופיל שלי</span>
+            </a>
+
+            <!-- ניהול -->
+            <div class="nav-section-title">ניהול</div>
+            <a href="#" class="nav-item" id="notifications">
+                <span class="nav-icon">🔔</span>
+                <span class="nav-text">התראות</span>
+            </a>
+            <a href="#" class="nav-item" id="settings">
+                <span class="nav-icon">⚙️</span>
+                <span class="nav-text">הגדרות</span>
+            </a>
+            <a href="#" class="nav-item" id="help">
+                <span class="nav-icon">💬</span>
+                <span class="nav-text">תמיכה</span>
+            </a>
+        </nav>
+
+        <button id="logoutBtn" class="btn-logout">התנתק</button>
+    </aside>
 
     <!-- תוכן ראשי -->
-    <main class="main-content">
-        <div class="welcome-section">
-            <h1 id="welcomeMessage">שלום!</h1>
-            <p class="welcome-subtitle">ברוך הבא לפלטפורמה לניהול קהילות</p>
-        </div>
-
-        <div class="dashboard-grid">
-            <div class="dashboard-card">
-                <div class="card-icon">👥</div>
-                <h3>הקהילות שלי</h3>
-                <p>צפה ונהל את הקהילות שלך</p>
-                <button class="btn-card">צפה בקהילות</button>
+    <div class="main-wrapper">
+        <main class="main-content">
+            <div class="page-header">
+                <h1 id="welcomeMessage">שלום!</h1>
+                <p>ברוך הבא לפלטפורמה לניהול קהילות</p>
             </div>
 
-            <div class="dashboard-card">
-                <div class="card-icon">➕</div>
-                <h3>צור קהילה חדשה</h3>
-                <p>התחל קהילה חדשה משלך</p>
-                <button class="btn-card">צור קהילה</button>
+            <!-- שירותי הפלטפורמה -->
+            <h2 style="text-align: center; margin-bottom: 30px; color: #333;">שירותי הפלטפורמה</h2>
+            
+            <div class="services-grid">
+                <div class="service-card" onclick="window.location.href='my-communities.html'">
+                    <div class="service-content">
+                        <h3>הקהילות שלי</h3>
+                        <p>צפה ונהל את הקהילות שלך, עקוב אחר פוסטים ותגובות</p>
+                    </div>
+                    <div class="service-icon">👥</div>
+                </div>
+
+                <div class="service-card" onclick="window.location.href='create-community.html'">
+                    <div class="service-content">
+                        <h3>צור קהילה חדשה</h3>
+                        <p>הקם קהילה משלך והתחל לנהל אותה בקלות</p>
+                    </div>
+                    <div class="service-icon">➕</div>
+                </div>
+
+                <div class="service-card" id="searchCard">
+                    <div class="service-content">
+                        <h3>חפש קהילות</h3>
+                        <p>גלה קהילות מעניינות והצטרף אליהן</p>
+                    </div>
+                    <div class="service-icon">🔍</div>
+                </div>
+
+                <div class="service-card" id="eventsCard">
+                    <div class="service-content">
+                        <h3>אירועים</h3>
+                        <p>לוח אירועים קהילתיים, מפגשים ופעילויות</p>
+                    </div>
+                    <div class="service-icon">📅</div>
+                </div>
+
+                <div class="service-card" id="notificationsCard">
+                    <div class="service-content">
+                        <h3>התראות</h3>
+                        <p>עדכונים על תגובות, פוסטים חדשים ופעילות בקהילות</p>
+                    </div>
+                    <div class="service-icon">🔔</div>
+                </div>
+
+                <div class="service-card" id="settingsCard">
+                    <div class="service-content">
+                        <h3>הגדרות</h3>
+                        <p>נהל את הפרופיל שלך והגדרות האפליקציה</p>
+                    </div>
+                    <div class="service-icon">⚙️</div>
+                </div>
             </div>
 
-            <div class="dashboard-card">
-                <div class="card-icon">🔍</div>
-                <h3>חפש קהילות</h3>
-                <p>גלה קהילות מעניינות</p>
-                <button class="btn-card">חיפוש</button>
+            <!-- פרטי המשתמש -->
+            <div class="user-info-section">
+                <h2>פרטי המשתמש</h2>
+                <div id="userDetails" class="user-details">
+                    <!-- יוצג כאן דינמית -->
+                </div>
             </div>
-
-            <div class="dashboard-card">
-                <div class="card-icon">⚙️</div>
-                <h3>הגדרות</h3>
-                <p>נהל את הפרופיל שלך</p>
-                <button class="btn-card">הגדרות</button>
-            </div>
-        </div>
-
-        <div class="user-info-section">
-            <h2>פרטי המשתמש</h2>
-            <div id="userDetails" class="user-details">
-                <!-- יוצג כאן דינמית -->
-            </div>
-        </div>
-    </main>
+        </main>
+    </div>
 
     <script src="home.js"></script>
 </body>

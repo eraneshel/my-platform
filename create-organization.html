@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>יצירת ארגון חדש</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="home-body">
+    <!-- סיידבר -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="user-profile">
+                <div class="user-avatar" id="userAvatar">מ</div>
+                <div class="user-info">
+                    <h3 id="userFullName">מנהל מערכת</h3>
+                    <p class="user-role">Super Admin</p>
+                </div>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a href="home.html" class="nav-item">
+                <span class="nav-icon">🏠</span>
+                <span class="nav-text">דף ראשי</span>
+            </a>
+            <a href="create-organization.html" class="nav-item active">
+                <span class="nav-icon">🏢</span>
+                <span class="nav-text">צור ארגון</span>
+            </a>
+            <a href="#" class="nav-item" id="manageOrgs">
+                <span class="nav-icon">📊</span>
+                <span class="nav-text">ניהול ארגונים</span>
+            </a>
+        </nav>
+
+        <button id="logoutBtn" class="btn-logout">התנתק</button>
+    </aside>
+
+    <!-- תוכן ראשי -->
+    <div class="main-wrapper">
+        <main class="main-content">
+            <div class="page-header">
+                <h1>יצירת ארגון חדש</h1>
+                <p>צור ארגון שיכיל קהילות ומשתמשים</p>
+            </div>
+
+            <div class="form-container">
+                <form id="createOrgForm">
+                    <div class="input-group">
+                        <label for="orgName">שם הארגון *</label>
+                        <input type="text" id="orgName" required placeholder="למשל: רשת אורט ישראל">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="orgDescription">תיאור הארגון *</label>
+                        <textarea id="orgDescription" rows="4" required placeholder="ספר על הארגון..."></textarea>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="orgType">סוג ארגון *</label>
+                        <select id="orgType" required>
+                            <option value="">בחר סוג</option>
+                            <option value="education">חינוך</option>
+                            <option value="military">צבאי</option>
+                            <option value="government">עירוני/ממשלתי</option>
+                            <option value="nonprofit">עמותה</option>
+                            <option value="corporate">עסקי</option>
+                            <option value="community">קהילתי</option>
+                            <option value="other">אחר</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="orgPlan">חבילת תכונות *</label>
+                        <select id="orgPlan" required>
+                            <option value="">בחר חבילה</option>
+                            <option value="basic">Basic - חינמי (3 קהילות, 50 חברים לקהילה, ערוץ אחד)</option>
+                            <option value="premium">Premium - $49/חודש (20 קהילות, 500 חברים, ערוצים ללא הגבלה)</option>
+                            <option value="enterprise">Enterprise - מחיר מותאם (ללא הגבלות)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="orgAdminEmail">אימייל מנהל הארגון *</label>
+                        <input type="email" id="orgAdminEmail" required placeholder="admin@organization.com">
+                        <small>המנהל יקבל הרשאות לנהל את הארגון ולהוסיף קהילות</small>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary">צור ארגון</button>
+                        <button type="button" id="cancelBtn" class="btn-secondary">ביטול</button>
+                    </div>
+                </form>
+            </div>
+
+            <div id="message" class="message hidden"></div>
+        </main>
+    </div>
+
+    <script src="create-organization.js"></script>
+</body>
+</html>
