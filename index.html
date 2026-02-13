@@ -3,8 +3,9 @@
     <!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore-compat.js"></script></script>
-    <head>
+<script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>התחברות לפלטפורמה</title>
@@ -21,7 +22,7 @@
                 <form id="phoneForm">
                     <div class="input-group">
                         <label for="phone">מספר טלפון סלולרי</label>
-                        <input type="tel" id="phone" placeholder="05X-XXXXXXX" required>
+                        <input type="tel" id="phone" placeholder="05XXXXXXXX" required>
                     </div>
                     
                     <button type="submit" class="btn-primary">שלח קוד התחברות</button>

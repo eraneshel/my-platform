@@ -1,22 +1,19 @@
 const phoneForm = document.getElementById('phoneForm');
 const loginVerificationForm = document.getElementById('loginVerificationForm');
 const messageDiv = document.getElementById('message');
-
 const phoneScreen = document.getElementById('phoneScreen');
 const loginVerificationScreen = document.getElementById('loginVerificationScreen');
 const loginCodeDiv = document.getElementById('loginCode');
 
 let currentLoginCode = '';
 let currentPhone = '';
+let currentUserData = null;
 
 function showMessage(text, type) {
     messageDiv.textContent = text;
     messageDiv.className = `message ${type}`;
     messageDiv.classList.remove('hidden');
-    
-    setTimeout(() => {
-        messageDiv.classList.add('hidden');
-    }, 4000);
+    setTimeout(() => messageDiv.classList.add('hidden'), 4000);
 }
 
 function generateCode() {
@@ -25,54 +22,48 @@ function generateCode() {
 
 function sendLoginCode(phone) {
     currentLoginCode = generateCode();
-    console.log(`📱 שולח SMS ל-${phone} עם קוד: ${currentLoginCode}`);
+    console.log(`📱 קוד לטלפון ${phone}: ${currentLoginCode}`);
     loginCodeDiv.textContent = currentLoginCode;
     return currentLoginCode;
 }
 
 // שליחת קוד התחברות
-phoneForm.addEventListener('submit', function(e) {
+phoneForm.addEventListener('submit', async function(e) {
     e.preventDefault();
-    
-    const phone = document.getElementById('phone').value.trim();
-    
-    // בדיקה: האם המשתמש קיים?
-    const users = JSON.parse(localStorage.getItem('users') || '[]');
-    const user = users.find(u => u.phone === phone);
-    
-    if (!user) {
-        showMessage('מספר טלפון לא רשום במערכת! ⚠️', 'error');
-        return;
+    const phone = document.getElementById('phone').value.trim().replace(/-/g, '');
+
+    try {
+        const usersRef = await db.collection('users').where('phone', '==', phone).get();
+
+        if (usersRef.empty) {
+            showMessage('מספר טלפון לא רשום במערכת! ⚠️', 'error');
+            return;
+        }
+
+        currentUserData = usersRef.docs[0].data();
+        currentPhone = phone;
+        sendLoginCode(phone);
+        phoneScreen.classList.add('hidden');
+        loginVerificationScreen.classList.remove('hidden');
+        showMessage('קוד נשלח! 📱', 'success');
+
+    } catch (error) {
+        console.error('שגיאה:', error);
+        showMessage('שגיאה! נסה שוב ❌', 'error');
     }
-    
-    currentPhone = phone;
-    sendLoginCode(phone);
-    
-    phoneScreen.classList.add('hidden');
-    loginVerificationScreen.classList.remove('hidden');
-    
-    showMessage('קוד נשלח! (בפרודקשן יישלח ב-SMS) 📱', 'success');
 });
 
-// אימות קוד התחברות
-loginVerificationForm.addEventListener('submit', function(e) {
+// אימות קוד
+loginVerificationForm.addEventListener('submit', async function(e) {
     e.preventDefault();
-    
     const enteredCode = document.getElementById('loginCodeInput').value;
-    
+
     if (enteredCode === currentLoginCode) {
-        const users = JSON.parse(localStorage.getItem('users') || '[]');
-        const user = users.find(u => u.phone === currentPhone);
-        
-        localStorage.setItem('currentUser', JSON.stringify(user));
-        
-        showMessage(`שלום ${user.firstName}! התחברת בהצלחה 🎉`, 'success');
-        
-        // מעבר לדף הבית
+        localStorage.setItem('currentUser', JSON.stringify(currentUserData));
+        showMessage(`שלום ${currentUserData.firstName}! התחברת בהצלחה 🎉`, 'success');
         setTimeout(() => {
             window.location.href = 'home.html';
         }, 1500);
-        
     } else {
         showMessage('קוד שגוי! נסה שוב ❌', 'error');
         document.getElementById('loginCodeInput').value = '';
@@ -86,7 +77,7 @@ document.getElementById('resendLoginCode').addEventListener('click', function() 
     document.getElementById('loginCodeInput').value = '';
 });
 
-// חזרה להזנת טלפון
+// חזרה
 document.getElementById('backToPhone').addEventListener('click', function(e) {
     e.preventDefault();
     loginVerificationScreen.classList.add('hidden');
@@ -94,4 +85,5 @@ document.getElementById('backToPhone').addEventListener('click', function(e) {
     phoneForm.reset();
     currentPhone = '';
     currentLoginCode = '';
+    currentUserData = null;
 });

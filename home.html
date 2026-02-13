@@ -73,7 +73,48 @@
                 <h1 id="welcomeMessage">שלום!</h1>
                 <p>ברוך הבא לפלטפורמה לניהול קהילות</p>
             </div>
+            <!-- אזור Super Admin - מוסתר למשתמשים רגילים -->
+<div id="adminSection" class="hidden">
+    <h2 style="text-align: center; margin-bottom: 30px; color: #333;">
+        👑 פאנל מנהל מערכת
+    </h2>
+    
+    <div class="services-grid" style="margin-bottom: 50px;">
+        <div class="service-card" onclick="window.location.href='create-organization.html'">
+            <div class="service-content">
+                <h3>צור ארגון חדש</h3>
+                <p>הקם ארגון חדש במערכת וממנה מנהל</p>
+            </div>
+            <div class="service-icon">🏢</div>
+        </div>
 
+        <div class="service-card" id="manageOrgsCard">
+            <div class="service-content">
+                <h3>ניהול ארגונים</h3>
+                <p>צפה וערוך את כל הארגונים במערכת</p>
+            </div>
+            <div class="service-icon">📊</div>
+        </div>
+
+        <div class="service-card" id="manageUsersCard">
+            <div class="service-content">
+                <h3>ניהול משתמשים</h3>
+                <p>צפה וערוך את כל המשתמשים במערכת</p>
+            </div>
+            <div class="service-icon">👥</div>
+        </div>
+
+        <div class="service-card" id="systemStatsCard">
+            <div class="service-content">
+                <h3>סטטיסטיקות מערכת</h3>
+                <p>צפה בנתוני שימוש ופעילות</p>
+            </div>
+            <div class="service-icon">📈</div>
+        </div>
+    </div>
+
+    <hr style="margin-bottom: 50px; border: 1px solid #eee;">
+</div>
             <!-- שירותי הפלטפורמה -->
             <h2 style="text-align: center; margin-bottom: 30px; color: #333;">שירותי הפלטפורמה</h2>
             
