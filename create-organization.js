@@ -1,11 +1,9 @@
-// בדיקה אם המשתמש מחובר
 const currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
 if (!currentUser) {
     window.location.href = 'index.html';
 }
 
-// בדיקה אם Super Admin
 async function checkSuperAdmin() {
     try {
         const adminDoc = await db.collection('admins').doc(currentUser.email).get();
@@ -19,71 +17,90 @@ async function checkSuperAdmin() {
     }
 }
 
-// הצגת שם המשתמש
-document.getElementById('userFullName').textContent = `${currentUser.firstName} ${currentUser.lastName}`;
-const initials = currentUser.firstName[0] + currentUser.lastName[0];
-document.getElementById('userAvatar').textContent = initials;
+document.getElementById('userName').textContent = `${currentUser.firstName} ${currentUser.lastName}`;
 
-const createOrgForm = document.getElementById('createOrgForm');
-const messageDiv = document.getElementById('message');
-
-// הגדרת מגבלות החבילות
 const planLimits = {
-    basic: {
-        maxCommunities: 3,
-        maxMembersPerCommunity: 50,
-        maxChannelsPerCommunity: 1
-    },
-    premium: {
-        maxCommunities: 20,
-        maxMembersPerCommunity: 500,
-        maxChannelsPerCommunity: -1
-    },
-    enterprise: {
-        maxCommunities: -1,
-        maxMembersPerCommunity: -1,
-        maxChannelsPerCommunity: -1
-    }
+    basic: { maxCommunities: 3, maxMembersPerCommunity: 50, maxChannelsPerCommunity: 1 },
+    premium: { maxCommunities: 20, maxMembersPerCommunity: 500, maxChannelsPerCommunity: -1 },
+    enterprise: { maxCommunities: -1, maxMembersPerCommunity: -1, maxChannelsPerCommunity: -1 }
 };
+
+const messageDiv = document.getElementById('message');
 
 function showMessage(text, type) {
     messageDiv.textContent = text;
-    messageDiv.className = `message ${type}`;
+    messageDiv.className = 'message ' + type;
     messageDiv.classList.remove('hidden');
-    setTimeout(() => messageDiv.classList.add('hidden'), 4000);
+    setTimeout(() => messageDiv.classList.add('hidden'), 5000);
 }
 
-// יצירת ארגון
-createOrgForm.addEventListener('submit', async function(e) {
+document.getElementById('createOrgForm').addEventListener('submit', async function(e) {
     e.preventDefault();
 
     const orgName = document.getElementById('orgName').value.trim();
     const orgDescription = document.getElementById('orgDescription').value.trim();
     const orgType = document.getElementById('orgType').value;
     const orgPlan = document.getElementById('orgPlan').value;
-    const orgAdminPhone = document.getElementById('orgAdminPhone').value.trim().replace(/-/g, '');
+
+    const billingName = document.getElementById('billingName').value.trim();
+    const billingEmail = document.getElementById('billingEmail').value.trim();
+    const billingPhone = document.getElementById('billingPhone').value.trim().replace(/-/g, '');
+    const billingAddress = document.getElementById('billingAddress').value.trim();
+    const paymentMethod = document.getElementById('paymentMethod').value;
+    const billingCycle = document.getElementById('billingCycle').value;
+    const billingStartDate = document.getElementById('billingStartDate').value;
+
+    const adminFirstName = document.getElementById('adminFirstName').value.trim();
+    const adminLastName = document.getElementById('adminLastName').value.trim();
+    const adminPhone = document.getElementById('adminPhone').value.trim().replace(/-/g, '');
+    const adminEmail = document.getElementById('adminEmail').value.trim();
 
     try {
-        // בדיקה אם הטלפון קיים במערכת
-        const usersRef = await db.collection('users').where('phone', '==', orgAdminPhone).get();
+        // בדיקה אם מנהל כבר קיים
+        let adminUser = null;
+        const userCheck = await db.collection('users').where('phone', '==', adminPhone).get();
 
-        if (usersRef.empty) {
-            showMessage('משתמש עם טלפון זה לא נמצא במערכת! ⚠️', 'error');
-            return;
+        if (!userCheck.empty) {
+            // משתמש קיים - עדכן תפקיד
+            adminUser = userCheck.docs[0].data();
+            await db.collection('users').doc(adminUser.uid).update({
+                role: 'orgadmin'
+            });
+        } else {
+            // משתמש לא קיים - צור חדש
+            const newUserRef = db.collection('users').doc();
+            adminUser = {
+                uid: newUserRef.id,
+                firstName: adminFirstName,
+                lastName: adminLastName,
+                phone: adminPhone,
+                email: adminEmail,
+                role: 'orgadmin',
+                createdAt: new Date().toISOString()
+            };
+            await newUserRef.set(adminUser);
         }
 
-        const orgAdmin = usersRef.docs[0].data();
-
-        // יצירת ארגון ב-Firestore
+        // יצירת ארגון
         const newOrg = {
             name: orgName,
             description: orgDescription,
             type: orgType,
             plan: orgPlan,
             limits: planLimits[orgPlan],
-            adminId: orgAdmin.uid,
-            adminName: `${orgAdmin.firstName} ${orgAdmin.lastName}`,
-            adminPhone: orgAdminPhone,
+            billing: {
+                name: billingName,
+                email: billingEmail,
+                phone: billingPhone,
+                address: billingAddress,
+                paymentMethod: paymentMethod,
+                cycle: billingCycle,
+                startDate: billingStartDate
+            },
+            adminId: adminUser.uid,
+            adminName: `${adminFirstName} ${adminLastName}`,
+            adminPhone: adminPhone,
+            adminEmail: adminEmail,
             createdBy: currentUser.uid,
             createdAt: new Date().toISOString(),
             communitiesCount: 0,
@@ -92,14 +109,13 @@ createOrgForm.addEventListener('submit', async function(e) {
 
         const orgRef = await db.collection('organizations').add(newOrg);
 
-        // עדכון תפקיד המנהל ב-Firestore
-        await db.collection('users').doc(orgAdmin.uid).update({
-            role: 'orgadmin',
+        // עדכון organizationId למנהל
+        await db.collection('users').doc(adminUser.uid).update({
             organizationId: orgRef.id
         });
 
         showMessage(`הארגון "${orgName}" נוצר בהצלחה! 🎉`, 'success');
-        createOrgForm.reset();
+        document.getElementById('createOrgForm').reset();
 
         setTimeout(() => {
             window.location.href = 'home.html';
@@ -111,14 +127,12 @@ createOrgForm.addEventListener('submit', async function(e) {
     }
 });
 
-// כפתור ביטול
 document.getElementById('cancelBtn').addEventListener('click', function() {
     if (confirm('האם אתה בטוח? השינויים לא יישמרו')) {
         window.location.href = 'home.html';
     }
 });
 
-// כפתור התנתקות
 document.getElementById('logoutBtn').addEventListener('click', function() {
     if (confirm('האם אתה בטוח שברצונך להתנתק?')) {
         localStorage.removeItem('currentUser');
@@ -126,11 +140,4 @@ document.getElementById('logoutBtn').addEventListener('click', function() {
     }
 });
 
-// ניהול ארגונים
-document.getElementById('manageOrgs').addEventListener('click', function(e) {
-    e.preventDefault();
-    alert('ניהול ארגונים יבנה בשלב הבא! 🚧');
-});
-
-// טעינה ראשונית
 checkSuperAdmin();
