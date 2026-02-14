@@ -113,7 +113,46 @@ document.getElementById('createOrgForm').addEventListener('submit', async functi
         await db.collection('users').doc(adminUser.uid).update({
             organizationId: orgRef.id
         });
+// יצירת קהילת מנהלי קהילות לארגון
+        await db.collection('communities').add({
+            name: `מנהלי קהילות - ${orgName}`,
+            description: `קהילת מנהלי הקהילות של ${orgName}`,
+            type: 'admin_community',
+            organizationId: orgRef.id,
+            members: [adminUser.uid, currentUser.uid],
+            membersCount: 2,
+            createdAt: new Date().toISOString(),
+            postsCount: 0,
+            privacy: 'secret',
+            ownerId: currentUser.uid
+        });
 
+        // הוספת מנהל הארגון לקהילת מנהלי המערכת
+        const systemAdminCommunity = await db.collection('communities')
+            .where('type', '==', 'system_admin_community')
+            .get();
+
+        if (systemAdminCommunity.empty) {
+            // קהילת מנהלי מערכת לא קיימת - צור אותה
+            await db.collection('communities').add({
+                name: 'מנהלי מערכת',
+                description: 'קהילת כל מנהלי הארגונים במערכת',
+                type: 'system_admin_community',
+                members: [adminUser.uid, currentUser.uid],
+                membersCount: 2,
+                createdAt: new Date().toISOString(),
+                postsCount: 0,
+                privacy: 'secret',
+                ownerId: currentUser.uid
+            });
+        } else {
+            // קהילה קיימת - הוסף את המנהל החדש
+            const communityDoc = systemAdminCommunity.docs[0];
+            await db.collection('communities').doc(communityDoc.id).update({
+                members: firebase.firestore.FieldValue.arrayUnion(adminUser.uid),
+                membersCount: firebase.firestore.FieldValue.increment(1)
+            });
+        }
         showMessage(`הארגון "${orgName}" נוצר בהצלחה! 🎉`, 'success');
         document.getElementById('createOrgForm').reset();
 
