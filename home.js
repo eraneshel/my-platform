@@ -106,10 +106,7 @@ document.getElementById('notificationsCard').addEventListener('click', function(
 document.getElementById('settingsCard').addEventListener('click', function() {
     alert('הגדרות יבנו בהמשך! 🚧');
 });
-// כפתורי Super Admin
-document.getElementById('manageOrgsCard').addEventListener('click', function() {
-    alert('ניהול ארגונים יבנה בהמשך! 🚧');
-});
+
 
 document.getElementById('manageUsersCard').addEventListener('click', function() {
     alert('ניהול משתמשים יבנה בהמשך! 🚧');

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ניהול ארגונים</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+</head>
+<body class="home-body">
+    <div class="app-layout">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="user-avatar" id="userAvatar">אא</div>
+                <div class="user-info">
+                    <div class="user-name" id="userFullName">טוען...</div>
+                    <div class="user-role">מנהל מערכת 👑</div>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="home.html" class="nav-item">🏠 דף ראשי</a>
+                <a href="manage-organizations.html" class="nav-item active">🏢 ניהול ארגונים</a>
+                <a href="my-communities.html" class="nav-item">👥 קהילות</a>
+            </nav>
+            <div class="sidebar-footer">
+                <button id="logoutBtn" class="btn-logout">התנתק</button>
+            </div>
+        </aside>
+                <main class="main-content" style="margin-right:260px;padding:30px">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:30px">
+                <h1>🏢 ניהול ארגונים</h1>
+                <button onclick="window.location.href='create-organization.html'" class="btn-primary">+ ארגון חדש</button>
+            </div>
+            <div id="orgsList"></div>
+            <div id="emptyState" class="hidden" style="text-align:center;padding:50px">
+                <p>אין ארגונים עדיין.</p>
+                <button onclick="window.location.href='create-organization.html'" class="btn-primary">צור ארגון חדש</button>
+            </div>
+        </main>
+    </div>
+    <div id="message" class="message hidden"></div>
+    <script src="manage-organizations.js"></script>
+</body>
+</html>

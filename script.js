@@ -3,6 +3,7 @@ const loginVerificationForm = document.getElementById('loginVerificationForm');
 const messageDiv = document.getElementById('message');
 const phoneScreen = document.getElementById('phoneScreen');
 const loginVerificationScreen = document.getElementById('loginVerificationScreen');
+const loginCodeDiv = document.getElementById('loginCode');
 
 let currentPhone = '';
 let currentUserData = null;
@@ -21,9 +22,10 @@ async function sendLoginCode(phone) {
             formattedPhone,
             window.recaptchaVerifier
         );
-        console.log('SMS נשלח!');
+        loginCodeDiv.textContent = 'קוד נשלח לטלפון שלך!';
+        console.log('SMS נשלח ל:', formattedPhone);
     } catch (error) {
-        console.error('שגיאה:', error);
+        console.error('שגיאה בשליחת SMS:', error);
         showMessage('שגיאה בשליחת SMS! נסה שוב', 'error');
     }
 }
@@ -31,18 +33,22 @@ async function sendLoginCode(phone) {
 phoneForm.addEventListener('submit', async function(e) {
     e.preventDefault();
     const phone = document.getElementById('phone').value.trim().replace(/-/g, '');
+
     try {
         const usersRef = await db.collection('users').where('phone', '==', phone).get();
+
         if (usersRef.empty) {
             showMessage('מספר טלפון לא רשום במערכת!', 'error');
             return;
         }
+
         currentUserData = usersRef.docs[0].data();
         currentPhone = phone;
         await sendLoginCode(phone);
         phoneScreen.classList.add('hidden');
         loginVerificationScreen.classList.remove('hidden');
         showMessage('קוד נשלח!', 'success');
+
     } catch (error) {
         console.error('שגיאה:', error);
         showMessage('שגיאה! נסה שוב', 'error');
@@ -52,6 +58,7 @@ phoneForm.addEventListener('submit', async function(e) {
 loginVerificationForm.addEventListener('submit', async function(e) {
     e.preventDefault();
     const enteredCode = document.getElementById('loginCodeInput').value;
+
     try {
         await window.confirmationResult.confirm(enteredCode);
         localStorage.setItem('currentUser', JSON.stringify(currentUserData));
@@ -59,6 +66,7 @@ loginVerificationForm.addEventListener('submit', async function(e) {
         setTimeout(() => {
             window.location.href = 'home.html';
         }, 1500);
+
     } catch (error) {
         console.error('שגיאה:', error);
         showMessage('קוד שגוי! נסה שוב', 'error');
