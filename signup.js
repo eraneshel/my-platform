@@ -20,11 +20,24 @@ function generateCode() {
     return Math.floor(100000 + Math.random() * 900000).toString();
 }
 
-function sendVerificationCode(phone) {
-    currentCode = generateCode();
-    console.log(`📱 קוד לטלפון ${phone}: ${currentCode}`);
-    generatedCodeDiv.textContent = currentCode;
-    return currentCode;
+async function sendVerificationCode(phone) {
+    try {
+        // פורמט טלפון ישראלי
+        const formattedPhone = '+972' + phone.substring(1);
+        
+        // שליחת SMS אמיתי דרך Firebase
+        window.confirmationResult = await auth.signInWithPhoneNumber(
+            formattedPhone,
+            window.recaptchaVerifier
+        );
+        
+        generatedCodeDiv.textContent = '📱 קוד נשלח לטלפון שלך!';
+        console.log('SMS נשלח ל:', formattedPhone);
+        
+    } catch (error) {
+        console.error('שגיאה בשליחת SMS:', error);
+        showMessage('שגיאה בשליחת SMS! נסה שוב ❌', 'error');
+    }
 }
 
 function isValidDate(dateString) {
@@ -117,7 +130,31 @@ verificationForm.addEventListener('submit', async function(e) {
 
     const enteredCode = document.getElementById('codeInput').value;
 
-    if (enteredCode === currentCode) {
+    if (enteredCode) {
+    try {
+        // אימות הקוד דרך Firebase
+        const result = await window.confirmationResult.confirm(enteredCode);
+        const firebaseUser = result.user;
+
+        // שמירת פרטי המשתמש ב-Firestore
+        await db.collection('users').doc(firebaseUser.uid).set({
+            ...pendingUser,
+            uid: firebaseUser.uid,
+            phone: firebaseUser.phoneNumber.replace('+972', '0')
+        });
+
+        showMessage(`שלום ${pendingUser.firstName}! נרשמת בהצלחה 🎉`, 'success');
+
+        setTimeout(() => {
+            window.location.href = 'index.html';
+        }, 2000);
+
+    } catch (error) {
+        console.error('שגיאה:', error);
+        showMessage('קוד שגוי! נסה שוב ❌', 'error');
+        document.getElementById('codeInput').value = '';
+    }
+}
         try {
             // יצירת משתמש ב-Firebase Auth
             const userCredential = await auth.createUserWithEmailAndPassword(

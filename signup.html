@@ -68,7 +68,7 @@
                         <label for="codeInput">הזן קוד בן 6 ספרות</label>
                         <input type="text" id="codeInput" maxlength="6" pattern="[0-9]{6}" required>
                     </div>
-                    
+                    <div id="recaptcha-container"></div>
                     <button type="submit" class="btn-primary">אמת והירשם</button>
                     <button type="button" id="resendCode" class="btn-secondary">שלח קוד חדש</button>
                 </form>
@@ -81,5 +81,17 @@
     </div>
     
     <script src="signup.js"></script>
+    <script>
+    // reCAPTCHA - חובה ל-Phone Auth
+    window.addEventListener('load', function() {
+        window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
+            'size': 'invisible',
+            'callback': function(response) {
+                console.log('reCAPTCHA verified!');
+            }
+        });
+        window.recaptchaVerifier.render();
+    });
+</script>
 </body>
 </html>

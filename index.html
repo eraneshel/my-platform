@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
-    <!-- Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore-compat.js"></script>
-<script src="firebase-config.js"></script>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>התחברות לפלטפורמה</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
 </head>
 <body>
     <div class="container">
@@ -24,7 +24,7 @@
                         <label for="phone">מספר טלפון סלולרי</label>
                         <input type="tel" id="phone" placeholder="05XXXXXXXX" required>
                     </div>
-                    
+                    <div id="recaptcha-container" style="margin-bottom: 15px;"></div>
                     <button type="submit" class="btn-primary">שלח קוד התחברות</button>
                 </form>
                 
@@ -33,21 +33,16 @@
             
             <!-- מסך אימות קוד -->
             <div id="loginVerificationScreen" class="hidden">
+                <div id="loginCode" class="code-box"></div>
                 <h1>אימות קוד</h1>
-                <p class="subtitle">הזן את קוד ההתחברות</p>
-                
-                <div class="code-display">
-                    <p>🔐 <strong>הקוד שלך (בפרודקשן ישלח ב-SMS):</strong></p>
-                    <div id="loginCode" class="code-box">------</div>
-                </div>
+                <p class="subtitle">הזן את קוד ההתחברות שנשלח לטלפון שלך</p>
                 
                 <form id="loginVerificationForm">
                     <div class="input-group">
                         <label for="loginCodeInput">הזן קוד בן 6 ספרות</label>
                         <input type="text" id="loginCodeInput" maxlength="6" pattern="[0-9]{6}" required>
                     </div>
-                    
-                    <button type="submit" class="btn-primary">התחבר</button>
+                    <button type="submit" class="btn-primary">אמת קוד</button>
                     <button type="button" id="resendLoginCode" class="btn-secondary">שלח קוד חדש</button>
                 </form>
                 
@@ -57,7 +52,21 @@
         
         <div id="message" class="message hidden"></div>
     </div>
-    
+
+    <script>
+        window.addEventListener('load', function() {
+            window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
+                'size': 'invisible',
+                'callback': function(response) {
+                    console.log('reCAPTCHA verified!');
+                },
+                'expired-callback': function() {
+                    console.log('reCAPTCHA expired');
+                }
+            });
+            window.recaptchaVerifier.render();
+        });
+    </script>
     <script src="script.js"></script>
 </body>
 </html>
